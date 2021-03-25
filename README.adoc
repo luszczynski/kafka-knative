@@ -1,0 +1,42 @@
+= Kafka and Knative Demo
+
+Kafka and Knative Demo
+
+* https://www.youtube.com/watch?v=5l6cCOarnCM
+
+== Deploy Serverless Operator
+
+=== Install Knative Serving
+
+=== Install Knative Eventing
+
+=== Install Knative Kafka
+
+* Channel: Enabled
+* Bootstrap Servers: my-cluster-kafka-bootstrap.debezium-demo.svc:9092
+* Source: Enabled
+
+== Deploy app
+
+* Click on *+Add*
+* Select *Container Image*
+* Image: *rhsummit2020/event-display*
+* Application: *event-display-app*
+* Name: *event-display*
+* Select *Knative Service*
+* Now click on *Create*
+
+== Create Event Source
+
+* Bootstrap Servers: *my-cluster-kafka-bootstrap.debezium-demo.svc:9092*
+* Topics: *my-topic*
+* Consumer Group: *my-group*
+* Application: Select *event-display-app*
+* Name: *kafka-source-my-topic*
+
+== Generate messages
+
+[source,bash]
+----
+kubectl -n debezium-demo run kafka-producer-topic1 -it --image=strimzi/kafka:0.20.1-kafka-2.6.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --broker-list my-cluster-kafka-bootstrap.debezium-demo.svc:9092 --topic my-topic
+----
